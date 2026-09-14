@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Workspace - SimplyPpl</title>
+<style>
+    :root {
+      --bg: #f6f5f1;
+      --card: #ffffff;
+      --ink: #1f2e27;
+      --ink-soft: #4b5a52;
+      --accent: #24463a;
+      --border: #e4e1d8;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8vh 6vw 4vh;
+    }
+    .brand {
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+      color: var(--ink-soft);
+      margin-bottom: 0.4rem;
+      text-decoration: none;
+    }
+    h1 {
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
+      font-weight: 600;
+      color: var(--accent);
+      margin: 0 0 2.5rem 0;
+      text-align: center;
+    }
+    .cards {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    a.card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.6rem 1.8rem;
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 1.25rem;
+      font-weight: 500;
+      transition: border-color 0.15s ease, transform 0.15s ease;
+    }
+    a.card:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+    .back {
+      margin-top: 3rem;
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    .back:hover { color: var(--accent); }
+    .placeholder {
+      max-width: 480px;
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+      text-align: center;
+      color: var(--ink-soft);
+      font-size: 1.05rem;
+    }
+    .field {
+      width: 100%;
+      max-width: 480px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.8rem;
+    }
+    .field label {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 0.8rem;
+    }
+    .field textarea {
+      width: 100%;
+      min-height: 110px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.9rem;
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--ink);
+      resize: vertical;
+      background: var(--bg);
+    }
+    .field button {
+      margin-top: 1.2rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.85rem 1.6rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      width: 100%;
+    }
+    .field button:hover { opacity: 0.92; }
+</style>
+</head>
+<body>
+    <a class="brand" href="/">SimplyPpl</a>
+    <h1>My Workspace</h1>
+    <div class="placeholder">Nothing here yet.</div>
+    <a class="back" href="../index.html">&larr; Back to Business</a>
+
+</body>
+</html>
