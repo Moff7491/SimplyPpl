@@ -52,7 +52,7 @@ intelligence involved is backroom plumbing, never the interface.
 No "Human Capital Management," "Employee Lifecycle," "Workflow
 Orchestration," "Compliance Hub," or similar software-vendor language,
 inside the product or in naming. Ordinary words: People, Meetings,
-Records, Reminders, My Workspace, My Group.
+Records, Reminders, My Team.
 
 ## 10. The architecture is locked until deliberately reopened
 The file map in section 26 of the build brief (root -> business/community ->

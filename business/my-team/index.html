@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Team - SimplyPpl</title>
+<style>
+    :root {
+      --bg: #f6f5f1;
+      --card: #ffffff;
+      --ink: #1f2e27;
+      --ink-soft: #4b5a52;
+      --accent: #24463a;
+      --border: #e4e1d8;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8vh 6vw 4vh;
+    }
+    .brand {
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+      color: var(--ink-soft);
+      margin-bottom: 0.4rem;
+      text-decoration: none;
+    }
+    h1 {
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
+      font-weight: 600;
+      color: var(--accent);
+      margin: 0 0 2.5rem 0;
+      text-align: center;
+    }
+    .back {
+      margin-top: 3rem;
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    .back:hover { color: var(--accent); }
+    .field {
+      width: 100%;
+      max-width: 480px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.8rem;
+      margin-bottom: 1.2rem;
+    }
+    .field label {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 0.8rem;
+    }
+    .field input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem 0.9rem;
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--ink);
+      background: var(--bg);
+      margin-bottom: 1rem;
+    }
+    .field input:last-of-type { margin-bottom: 0; }
+    .field button {
+      margin-top: 1.2rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.85rem 1.6rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      width: 100%;
+    }
+    .field button:hover { opacity: 0.92; }
+    .field button.secondary {
+      background: transparent;
+      color: var(--ink-soft);
+      border: 1px solid var(--border);
+      margin-top: 0.6rem;
+    }
+    .hidden { display: none; }
+    .roster {
+      width: 100%;
+      max-width: 480px;
+    }
+    .roster h2 {
+      font-size: 1.1rem;
+      color: var(--ink-soft);
+      font-weight: 500;
+      margin: 2rem 0 0.8rem 0;
+    }
+    .member {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.1rem 1.3rem;
+      margin-bottom: 0.7rem;
+    }
+    .member .name {
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+    }
+    .member .role {
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      margin-bottom: 0.2rem;
+    }
+    .member .contact {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+    }
+    .member .actions {
+      margin-top: 0.6rem;
+    }
+    .member .actions button {
+      display: inline-block;
+      margin-right: 1rem;
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      cursor: pointer;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    .empty-note {
+      color: var(--ink-soft);
+      font-size: 0.95rem;
+      text-align: center;
+      max-width: 480px;
+    }
+</style>
+</head>
+<body>
+    <a class="brand" href="/">SimplyPpl</a>
+    <h1>My Team</h1>
+
+    <div class="field">
+      <label id="formLabel" for="memberName">Add a team member</label>
+      <input id="memberName" type="text" placeholder="Name">
+      <input id="memberRole" type="text" placeholder="Role">
+      <input id="memberContact" type="text" placeholder="Email or phone">
+      <button type="button" onclick="saveMember()">Save</button>
+      <button id="cancelBtn" type="button" class="secondary hidden" onclick="resetForm()">Cancel</button>
+    </div>
+
+    <div class="roster">
+      <h2>Team</h2>
+      <div id="memberList"></div>
+      <p id="emptyNote" class="empty-note hidden">No team members yet. Add one above.</p>
+    </div>
+
+    <a class="back" href="../index.html">&larr; Back to Business</a>
+
+<script>
+    // Team members are kept in this browser only - nothing is sent anywhere.
+    var STORAGE_KEY = "simplyppl_business_my_team";
+    var editIndex = null;
+
+    function loadMembers() {
+      try {
+        var raw = window.localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveMembers(members) {
+      try {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(members));
+      } catch (e) {
+        // storage unavailable - members just won't persist this session
+      }
+    }
+
+    function resetForm() {
+      editIndex = null;
+      document.getElementById("memberName").value = "";
+      document.getElementById("memberRole").value = "";
+      document.getElementById("memberContact").value = "";
+      document.getElementById("formLabel").textContent = "Add a team member";
+      document.getElementById("cancelBtn").classList.add("hidden");
+    }
+
+    function saveMember() {
+      var name = document.getElementById("memberName").value.trim();
+      var role = document.getElementById("memberRole").value.trim();
+      var contact = document.getElementById("memberContact").value.trim();
+      if (!name) return;
+
+      var members = loadMembers();
+      var entry = { name: name, role: role, contact: contact };
+
+      if (editIndex !== null) {
+        members[editIndex] = entry;
+      } else {
+        members.push(entry);
+      }
+      saveMembers(members);
+
+      resetForm();
+      renderMembers();
+    }
+
+    function editMember(index) {
+      var members = loadMembers();
+      var m = members[index];
+      if (!m) return;
+
+      editIndex = index;
+      document.getElementById("memberName").value = m.name;
+      document.getElementById("memberRole").value = m.role;
+      document.getElementById("memberContact").value = m.contact;
+      document.getElementById("formLabel").textContent = "Edit team member";
+      document.getElementById("cancelBtn").classList.remove("hidden");
+      window.scrollTo(0, 0);
+    }
+
+    function deleteMember(index) {
+      var members = loadMembers();
+      members.splice(index, 1);
+      saveMembers(members);
+      if (editIndex === index) resetForm();
+      renderMembers();
+    }
+
+    function renderMembers() {
+      var members = loadMembers();
+      var list = document.getElementById("memberList");
+      var emptyNote = document.getElementById("emptyNote");
+      list.innerHTML = "";
+
+      if (members.length === 0) {
+        emptyNote.classList.remove("hidden");
+        return;
+      }
+      emptyNote.classList.add("hidden");
+
+      members.forEach(function (m, i) {
+        var div = document.createElement("div");
+        div.className = "member";
+
+        var nameDiv = document.createElement("div");
+        nameDiv.className = "name";
+        nameDiv.textContent = m.name;
+
+        var roleDiv = document.createElement("div");
+        roleDiv.className = "role";
+        roleDiv.textContent = m.role || "(no role set)";
+
+        var contactDiv = document.createElement("div");
+        contactDiv.className = "contact";
+        contactDiv.textContent = m.contact || "(no contact set)";
+
+        var actionsDiv = document.createElement("div");
+        actionsDiv.className = "actions";
+
+        var editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.textContent = "Edit";
+        editBtn.onclick = function () { editMember(i); };
+
+        var delBtn = document.createElement("button");
+        delBtn.type = "button";
+        delBtn.textContent = "Delete";
+        delBtn.onclick = function () { deleteMember(i); };
+
+        actionsDiv.appendChild(editBtn);
+        actionsDiv.appendChild(delBtn);
+
+        div.appendChild(nameDiv);
+        div.appendChild(roleDiv);
+        div.appendChild(contactDiv);
+        div.appendChild(actionsDiv);
+        list.appendChild(div);
+      });
+    }
+
+    renderMembers();
+</script>
+</body>
+</html>
